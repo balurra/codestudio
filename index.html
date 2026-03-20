@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta property="og:title" content="Code Studio" />
+  <meta name="description" content="Productora audiovisual — Uruguay. Filmamos lo que vivís, contamos lo que sentís." />
+  <link rel="icon" href="https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/167bf564-14aa-4d14-949a-2da0eeec6f72_carw_1x1x32.jpg?h=77370a37030b5ba33db7c25b7fea49d6" />
+  <title>Code Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --or: #FF4500;
+      --bg: #080808;
+      --tx: #ebebeb;
+      --mt: #555;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--tx);
+      font-family: 'Inter', sans-serif; font-weight: 300;
+      cursor: none; overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; }
+    button { background: none; border: none; color: inherit; cursor: none; font-family: inherit; }
+
+    /* ── CURSOR ─────────────────────────────────── */
+    .cd { position:fixed; width:6px; height:6px; background:var(--or); border-radius:50%;
+      pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform .15s; }
+    .cr { position:fixed; width:36px; height:36px; border:1px solid rgba(255,69,0,.4);
+      border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%);
+      transition:width .3s cubic-bezier(.22,1,.36,1), height .3s cubic-bezier(.22,1,.36,1); }
+    body.hov .cd { transform:translate(-50%,-50%) scale(1.8); }
+    body.hov .cr { width:54px; height:54px; border-color:rgba(255,69,0,.7); }
+
+    /* ── NAV ────────────────────────────────────── */
+    .nav { position:fixed; top:0; left:0; right:0; z-index:300;
+      display:flex; justify-content:space-between; align-items:center;
+      padding:28px 5vw; mix-blend-mode:difference; }
+    .nav-b { display:flex; align-items:center; gap:10px; }
+    .nav-b img { height:26px; filter:brightness(10); }
+    .nav-w { font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:.12em; }
+    .nav-w i { color:var(--or); font-style:normal; }
+    .nav-l { display:flex; gap:32px; list-style:none; }
+    .nav-l a { font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.55; transition:opacity .3s; }
+    .nav-l a:hover { opacity:1; }
+
+    /* ── HERO ───────────────────────────────────── */
+    #hero { position:relative; height:100vh; min-height:600px; display:flex; align-items:flex-end; overflow:hidden; }
+    .hv { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.5; }
+    .hg { position:absolute; inset:0;
+      background: linear-gradient(to bottom, rgba(8,8,8,.3) 0%, transparent 35%, rgba(8,8,8,.65) 72%, var(--bg) 100%),
+                  linear-gradient(to right, rgba(8,8,8,.55) 0%, transparent 55%); }
+    .hi { position:relative; z-index:5; padding:0 5vw 9vh; max-width:1200px; }
+    .au { opacity:0; transform:translateY(22px); transition:opacity .85s, transform .85s cubic-bezier(.22,1,.36,1); }
+    .au.in { opacity:1; transform:none; }
+    .ac { overflow:hidden; display:block; }
+    .ac span { display:block; transform:translateY(115%); transition:transform .9s cubic-bezier(.22,1,.36,1); }
+    .ac span.in { transform:none; }
+    .he { font-size:clamp(10px,1vw,12px); letter-spacing:.3em; text-transform:uppercase; color:var(--or); font-weight:400; margin-bottom:22px; }
+    .ht { font-family:'Bebas Neue',sans-serif; font-size:clamp(64px,10.5vw,170px); line-height:.88; margin-bottom:26px; }
+    .hs { font-size:clamp(14px,1.3vw,17px); color:#888; font-style:italic; line-height:1.7; margin-bottom:48px; }
+    .cta { display:inline-flex; align-items:center; gap:14px; font-size:clamp(10px,.95vw,12px);
+      letter-spacing:.22em; text-transform:uppercase; font-weight:500; padding:18px 34px;
+      border:1px solid rgba(255,255,255,.16); position:relative; overflow:hidden; transition:border-color .35s; }
+    .cta::after { content:''; position:absolute; bottom:0; left:-100%; width:100%; height:1px; background:var(--or); transition:left .5s cubic-bezier(.22,1,.36,1); }
+    .cta:hover::after { left:0; }
+    .cta:hover { border-color:rgba(255,69,0,.45); }
+    .cta-a { width:22px; height:1px; background:var(--or); position:relative; transition:width .3s; }
+    .cta-a::after { content:''; position:absolute; right:0; top:-3px; width:6px; height:6px; border-right:1px solid var(--or); border-top:1px solid var(--or); transform:rotate(45deg); }
+    .cta:hover .cta-a { width:30px; }
+    .si { position:absolute; right:5vw; bottom:48px; z-index:5; display:flex; flex-direction:column; align-items:center; gap:10px; }
+    .si span { font-size:9px; letter-spacing:.25em; text-transform:uppercase; color:var(--mt); writing-mode:vertical-rl; }
+    .sb { width:1px; height:52px; background:linear-gradient(to bottom,var(--or),transparent); animation:pls 2.4s ease-in-out infinite; }
+    @keyframes pls { 0%,100%{opacity:.3;transform:scaleY(1);transform-origin:top}50%{opacity:.9;transform:scaleY(.45)} }
+
+    /* ── CANVAS (click burst) ──────────────────── */
+    #bc { position:fixed; inset:0; pointer-events:none; z-index:9990; }
+
+    /* ── WORK ───────────────────────────────────── */
+    #work { padding:100px 0 80px; }
+    .wt { display:flex; justify-content:space-between; align-items:baseline; padding:0 5vw; margin-bottom:56px; }
+    .wh { font-family:'Bebas Neue',sans-serif; font-size:clamp(42px,5.5vw,86px); }
+    .wc { font-size:11px; letter-spacing:.2em; color:var(--mt); text-transform:uppercase; }
+
+    .wg { display:grid; grid-template-columns:1fr 1fr; gap:16px; padding:0 5vw; }
+
+    /* card */
+    .wk { position:relative; display:block; cursor:none;
+      opacity:0; transform:translateY(40px);
+      transition:opacity .7s, transform .7s cubic-bezier(.22,1,.36,1); }
+    .wk.in { opacity:1; transform:none; }
+    .wk.wide { grid-column:1/-1; }
+    .wk.stg { margin-top:48px; }
+
+    .wm { position:relative; overflow:hidden; background:#0f0f0f; }
+    .wk.wide .wm { aspect-ratio:21/9; }
+    .wk:not(.wide) .wm { aspect-ratio:4/3; }
+    .wi { width:100%; height:100%; object-fit:cover; transform:scale(1.06); transition:transform .75s cubic-bezier(.22,1,.36,1); }
+    .wk:hover .wi { transform:scale(1); }
+    .wo { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.5) 0%,transparent 55%); opacity:0; transition:opacity .4s; z-index:2; }
+    .wk:hover .wo { opacity:1; }
+    .wx { position:absolute; bottom:14px; right:18px; font-family:'Bebas Neue',sans-serif; font-size:52px; line-height:1; color:rgba(255,255,255,.04); z-index:1; transition:color .4s; }
+    .wk:hover .wx { color:rgba(255,69,0,.12); }
+    .wa { position:absolute; bottom:0; left:0; width:0; height:2px; background:var(--or); z-index:3; transition:width .55s cubic-bezier(.22,1,.36,1); }
+    .wk:hover .wa { width:100%; }
+    .wf { padding:14px 0 8px; display:flex; justify-content:space-between; align-items:flex-end; transition:transform .4s cubic-bezier(.22,1,.36,1); }
+    .wk:hover .wf { transform:translateY(-3px); }
+    .wfc { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--mt); margin-bottom:3px; transition:color .3s; }
+    .wk:hover .wfc { color:var(--or); }
+    .wfn { font-family:'Bebas Neue',sans-serif; font-size:clamp(20px,2.2vw,32px); line-height:1; letter-spacing:.02em; }
+    .wfy { font-size:11px; color:var(--mt); letter-spacing:.12em; padding-bottom:3px; }
+    .wk:nth-child(even):not(.wide) { transition-delay:.08s; }
+
+    /* click hint on cards */
+    .wk .wm::after {
+      content:'Ver'; position:absolute; top:50%; left:50%;
+      transform:translate(-50%,-50%) scale(.85); opacity:0;
+      font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+      color:var(--or); border:1px solid var(--or); border-radius:50%;
+      width:72px; height:72px; display:flex; align-items:center; justify-content:center;
+      z-index:4; transition:opacity .35s, transform .35s cubic-bezier(.22,1,.36,1);
+      backdrop-filter:blur(6px); background:rgba(8,8,8,.45);
+    }
+    .wk:hover .wm::after { opacity:1; transform:translate(-50%,-50%) scale(1); }
+
+    /* ── VIEWER ─────────────────────────────────── */
+    #vw { position:fixed; inset:0; z-index:500; display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      opacity:0; pointer-events:none; transition:opacity .35s; }
+    #vw.open { opacity:1; pointer-events:all; }
+    .vbg { position:absolute; inset:0; background:rgba(6,6,6,.94); backdrop-filter:blur(20px); }
+    .vwr { position:relative; z-index:2; width:82vw; max-width:1100px; }
+    .vim { width:100%; aspect-ratio:16/10; object-fit:cover; display:block;
+      clip-path:inset(12% 8%); transform:scale(.9);
+      transition:clip-path .65s cubic-bezier(.22,1,.36,1), transform .65s cubic-bezier(.22,1,.36,1); }
+    #vw.open .vim { clip-path:inset(0); transform:scale(1); }
+    #vw.closing .vim { clip-path:inset(12% 8%); transform:scale(.9); }
+    .vif { display:flex; justify-content:space-between; align-items:flex-end; padding:20px 0 0;
+      opacity:0; transform:translateY(16px);
+      transition:opacity .45s .18s, transform .45s .18s cubic-bezier(.22,1,.36,1); }
+    #vw.open .vif { opacity:1; transform:none; }
+    #vw.closing .vif { opacity:0; transform:translateY(16px); transition-delay:0s; }
+    .vic { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--or); margin-bottom:4px; }
+    .vin { font-family:'Bebas Neue',sans-serif; font-size:clamp(28px,3.5vw,52px); line-height:1; }
+    .vil { display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:.18em;
+      text-transform:uppercase; color:var(--or); margin-top:12px; padding:10px 0;
+      border-bottom:1px solid rgba(255,69,0,.3); transition:border-color .3s; }
+    .vil:hover { border-color:var(--or); }
+    .vil span { transition:transform .3s; display:inline-block; }
+    .vil:hover span { transform:translateX(4px); }
+
+    /* viewer nav */
+    .vnv { position:absolute; bottom:5vh; left:50%; transform:translateX(-50%); z-index:3;
+      display:flex; align-items:center; gap:28px;
+      opacity:0; transition:opacity .4s .25s; }
+    #vw.open .vnv { opacity:1; }
+    #vw.closing .vnv { opacity:0; transition-delay:0s; }
+    .vnv button { font-size:18px; width:44px; height:44px; border:1px solid rgba(255,255,255,.12);
+      border-radius:50%; display:flex; align-items:center; justify-content:center;
+      transition:border-color .3s, background .3s; letter-spacing:0; }
+    .vnv button:hover { border-color:var(--or); background:rgba(255,69,0,.08); }
+    .vct { font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:.15em; color:var(--mt); min-width:70px; text-align:center; }
+    .vcl { position:absolute; top:4vh; right:5vw; z-index:3; font-size:22px; width:44px; height:44px;
+      border:1px solid rgba(255,255,255,.1); border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; transition:opacity .3s .2s, border-color .3s, background .3s; }
+    #vw.open .vcl { opacity:1; }
+    .vcl:hover { border-color:var(--or); background:rgba(255,69,0,.08); }
+
+    /* ── FOOTER ─────────────────────────────────── */
+    footer { padding:72px 5vw 48px; border-top:1px solid rgba(255,255,255,.04);
+      display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:20px; }
+    .fl { font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:.1em; }
+    .fl i { color:var(--or); font-style:normal; }
+    .fc { display:flex; flex-direction:column; align-items:center; gap:12px; }
+    .fc img { height:36px; filter:brightness(0) invert(1); opacity:.5; }
+    .fc span { font-size:9px; letter-spacing:.22em; color:#2a2a2a; text-transform:uppercase; }
+    .fr { display:flex; justify-content:flex-end; gap:28px; }
+    .fr a { font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--mt); transition:color .3s; }
+    .fr a:hover { color:var(--tx); }
+
+    @media(max-width:820px){
+      .nav-l{display:none}
+      .wg{grid-template-columns:1fr}
+      .wk.wide .wm{aspect-ratio:16/10}
+      .wk.stg{margin-top:0}
+      footer{grid-template-columns:1fr;text-align:center;gap:28px}
+      .fr{justify-content:center}
+      body{cursor:auto} .cd,.cr{display:none}
+      .vwr{width:94vw}
+    }
+  </style>
+</head>
+<body>
+
+<div class="cd" id="cD"></div>
+<div class="cr" id="cR"></div>
+<canvas id="bc"></canvas>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="nav-b">
+    <img src="logo.png" alt="Code Studio" />
+    <span class="nav-w">Code<i>.</i>Studio</span>
+  </a>
+  <ul class="nav-l">
+    <li><a href="#work">Trabajo</a></li>
+    <li><a href="https://codestudio.com.uy" target="_blank">Nosotros</a></li>
+    <li><a href="mailto:hola@codestudio.com.uy">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <video class="hv" autoplay loop muted playsinline>
+    <source src="logo-animation.mp4" type="video/mp4" />
+  </video>
+  <div class="hg"></div>
+  <div class="hi">
+    <p class="he au" data-d="0">Productora audiovisual — Uruguay</p>
+    <h1 class="ht">
+      <span class="ac"><span data-d="80">We Create</span></span>
+      <span class="ac"><span data-d="180">Endlessly</span></span>
+    </h1>
+    <p class="hs au" data-d="300">Filmamos lo que vivís, contamos lo que sentís.</p>
+    <a href="#work" class="cta au" data-d="420" id="cta">
+      Descubrí nuestro trabajo
+      <span class="cta-a"></span>
+    </a>
+  </div>
+  <div class="si"><span>Scroll</span><div class="sb"></div></div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div class="wt">
+    <h2 class="wh au" data-d="0">Nuestro trabajo</h2>
+    <span class="wc au" data-d="80">09 proyectos</span>
+  </div>
+
+  <div class="wg">
+
+    <div class="wk wide" data-i="0">
+      <div class="wm">
+        <img class="wi" src="https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/1e6afc41-9735-4396-ba9e-1c4a641ffe63_rwc_484x0x2879x2160x1920.jpg?h=b18238452bb572109f3ac01208bfb442" alt="Canelones SUENA BIEN 26'" loading="eager" draggable="false" />
+        <div class="wo"></div><span class="wx">01</span><div class="wa"></div>
+      </div>
+      <div class="wf">
+        <div><div class="wfc">Shows & Fiestas</div><h3 class="wfn">Canelones SUENA BIEN 26'</h3></div>
+        <span class="wfy">2026</span>
+      </div>
+    </div>
+
+    <div class="wk" data-i="1">
+      <div class="wm">
+        <img class="wi" src="https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/96711a91-ccc3-47ba-b705-00ec9c13007c_rwc_0x690x2000x1500x1920.JPEG?h=5feffcbca4311c0ce67bed337f6fd491" alt="Vans x Harlem" loading="lazy" draggable="false" />
+        <div class="wo"></div><span class="wx">02</span><div class="wa"></div>
+      </div>
+      <div class="wf">
+        <div><div class="wfc">Marcas</div><h3 class="wfn">Vans x Harlem</h3></div>
+        <span class="wfy">2025</span>
+      </div>
+    </div>
+
+    <div class="wk stg" data-i="2">
+      <div class="wm">
+        <img class="wi" src="https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/34fe84a1-9c07-4c98-ad4d-d638d29bfdbd_carw_4x3x1920.jpg?h=972c169a814f1f5539c99c1b7b3529da" alt="Fito Páez" loading="lazy" draggable="false" />
+        <div class="wo"></div><span class="wx">03</span><div class="wa"></div>
+      </div>
+      <div class="wf">
+        <div><div class="wfc">Shows & Fiestas</div><h3 class="wfn">Fito Páez</h3></div>
+        <span class="wfy">2025</span>
+      </div>
+    </div>
+
+    <div class="wk" data-i="3">
+      <div class="wm">
+        <img class="wi" src="https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/939cee94-ee3a-4357-b3af-898cdaf19170_carw_4x3x1920.jpg?h=65cb1cfc3f9b7157a75b07725f0e457c" alt="Canelones Suena Bien 25'" loading="lazy" draggable="false" />
+        <div class="wo"></div><span class="wx">04</span><div class="wa"></div>
+      </div>
+      <div class="wf">
+        <div><div class="wfc">Shows & Fiestas</div><h3 class="wfn">Canelones Suena Bien 25'</h3></div>
+        <span class="wfy">2025</span>
+      </div>
+    </div>
+
+    <div class="wk stg" data-i="4">
+      <div class="wm">
+        <img class="wi" src="https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/e026f89d-456f-458f-8ac9-48f9089f689d_rwc_242x0x1439x1080x1920.jpg?h=baed46b267bcd8970db3783e11908552" alt="NTVG Filarmónico" loading="lazy" draggable="false" />
+        <div class="wo"></div><span class="wx">05</span><div class="wa"></div>
+      </div>
+      <div class="wf">
+        <div><div class="wfc">Eventos</div><h3 class="wfn">NTVG Filarmónico</h3></div>
+        <span class="wfy">2025</span>
+      </div>
+    </div>
+
+    <div class="wk wide" data-i="5">
+      <div class="wm">
+        <img class="wi" src="https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/b8bf8685-84c8-49f6-8bb2-5eb32a62c64a_rwc_242x0x1439x1080x1920.jpg?h=f30f8ab9cd2b8421e81e872d345e6b68" alt="Fiesta de la Cerveza 25'" loading="lazy" draggable="false" />
+        <div class="wo"></div><span class="wx">06</span><div class="wa"></div>
+      </div>
+      <div class="wf">
+        <div><div class="wfc">Eventos</div><h3 class="wfn">Fiesta de la Cerveza 25'</h3></div>
+        <span class="wfy">2025</span>
+      </div>
+    </div>
+
+    <div class="wk" data-i="6">
+      <div class="wm">
+        <img class="wi" src="https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/468cf258-9696-4e77-8b70-4a7706e84fe7_rwc_242x0x1439x1080x1920.jpg?h=8d15b8bcb9efbcad66a1386fada1b712" alt="No Sleep Club" loading="lazy" draggable="false" />
+        <div class="wo"></div><span class="wx">07</span><div class="wa"></div>
+      </div>
+      <div class="wf">
+        <div><div class="wfc">Eventos</div><h3 class="wfn">No Sleep Club</h3></div>
+        <span class="wfy">2024</span>
+      </div>
+    </div>
+
+    <div class="wk stg" data-i="7">
+      <div class="wm">
+        <img class="wi" src="https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/d0fff9a7-0236-4e84-93db-fa61af9cd2a9_carw_4x3x1920.jpg?h=3d423fb3106f6cb4490e8dc4e7a027e1" alt="NTVG — CSB" loading="lazy" draggable="false" />
+        <div class="wo"></div><span class="wx">08</span><div class="wa"></div>
+      </div>
+      <div class="wf">
+        <div><div class="wfc">Shows & Fiestas</div><h3 class="wfn">NTVG — CSB</h3></div>
+        <span class="wfy">2024</span>
+      </div>
+    </div>
+
+    <div class="wk" data-i="8">
+      <div class="wm">
+        <img class="wi" src="https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/f1696105-d6cd-4578-b02c-19049428fa25_carw_4x3x1920.jpg?h=38e5a8569682d08f1ce822e821ccdd8a" alt="Miranda — Antel Arena" loading="lazy" draggable="false" />
+        <div class="wo"></div><span class="wx">09</span><div class="wa"></div>
+      </div>
+      <div class="wf">
+        <div><div class="wfc">Eventos</div><h3 class="wfn">Miranda — Antel Arena</h3></div>
+        <span class="wfy">2024</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- VIEWER -->
+<div id="vw">
+  <div class="vbg" id="vwBg"></div>
+  <div class="vwr">
+    <img class="vim" id="vImg" alt="" />
+    <div class="vif">
+      <div>
+        <div class="vic" id="vCat"></div>
+        <h2 class="vin" id="vName"></h2>
+        <a class="vil" id="vLink" target="_blank">Ver proyecto <span>&rarr;</span></a>
+      </div>
+      <span class="wfy" id="vYr"></span>
+    </div>
+  </div>
+  <div class="vnv">
+    <button id="vPrev" aria-label="Anterior">&larr;</button>
+    <span class="vct" id="vCt"></span>
+    <button id="vNext" aria-label="Siguiente">&rarr;</button>
+  </div>
+  <button class="vcl" id="vCl" aria-label="Cerrar">&times;</button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fl">Code<i>.</i>Studio</div>
+  <div class="fc">
+    <img src="logo.png" alt="" />
+    <span>For those who create endlessly</span>
+  </div>
+  <nav class="fr">
+    <a href="https://instagram.com" target="_blank">Instagram</a>
+    <a href="mailto:hola@codestudio.com.uy">Contacto</a>
+  </nav>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ── PROJECT DATA ─────────────────────────────── */
+  const P = [
+    { n:'Canelones SUENA BIEN 26\'', c:'Shows & Fiestas', y:'2026', h:'https://codestudio.com.uy/canelones-suena-bien-26',
+      img:'https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/1e6afc41-9735-4396-ba9e-1c4a641ffe63_rwc_484x0x2879x2160x1920.jpg?h=b18238452bb572109f3ac01208bfb442' },
+    { n:'Vans x Harlem', c:'Marcas', y:'2025', h:'https://codestudio.com.uy/vans-x-harlem-2025',
+      img:'https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/96711a91-ccc3-47ba-b705-00ec9c13007c_rwc_0x690x2000x1500x1920.JPEG?h=5feffcbca4311c0ce67bed337f6fd491' },
+    { n:'Fito Páez', c:'Shows & Fiestas', y:'2025', h:'https://codestudio.com.uy/gira-fito-paez',
+      img:'https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/34fe84a1-9c07-4c98-ad4d-d638d29bfdbd_carw_4x3x1920.jpg?h=972c169a814f1f5539c99c1b7b3529da' },
+    { n:'Canelones Suena Bien 25\'', c:'Shows & Fiestas', y:'2025', h:'https://codestudio.com.uy/canelones-suena-bien-2025',
+      img:'https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/939cee94-ee3a-4357-b3af-898cdaf19170_carw_4x3x1920.jpg?h=65cb1cfc3f9b7157a75b07725f0e457c' },
+    { n:'NTVG Filarmónico', c:'Eventos', y:'2025', h:'https://codestudio.com.uy/cro',
+      img:'https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/e026f89d-456f-458f-8ac9-48f9089f689d_rwc_242x0x1439x1080x1920.jpg?h=baed46b267bcd8970db3783e11908552' },
+    { n:'Fiesta de la Cerveza 25\'', c:'Eventos', y:'2025', h:'https://codestudio.com.uy/fiesta-de-la-cerveza-2025',
+      img:'https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/b8bf8685-84c8-49f6-8bb2-5eb32a62c64a_rwc_242x0x1439x1080x1920.jpg?h=f30f8ab9cd2b8421e81e872d345e6b68' },
+    { n:'No Sleep Club', c:'Eventos', y:'2024', h:'https://codestudio.com.uy/no-sleep-club',
+      img:'https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/468cf258-9696-4e77-8b70-4a7706e84fe7_rwc_242x0x1439x1080x1920.jpg?h=8d15b8bcb9efbcad66a1386fada1b712' },
+    { n:'NTVG — CSB', c:'Shows & Fiestas', y:'2024', h:'https://codestudio.com.uy/canelones-suena-bien-2024',
+      img:'https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/d0fff9a7-0236-4e84-93db-fa61af9cd2a9_carw_4x3x1920.jpg?h=3d423fb3106f6cb4490e8dc4e7a027e1' },
+    { n:'Miranda — Antel Arena', c:'Eventos', y:'2024', h:'https://codestudio.com.uy/miranda-antel-arena',
+      img:'https://cdn.myportfolio.com/bb78b692-35b5-4cdf-8aba-960f4836fc6c/f1696105-d6cd-4578-b02c-19049428fa25_carw_4x3x1920.jpg?h=38e5a8569682d08f1ce822e821ccdd8a' },
+  ];
+
+  /* ── CURSOR ──────────────────────────────────── */
+  const dot = document.getElementById('cD'), ring = document.getElementById('cR');
+  let mx = -200, my = -200, rx = -200, ry = -200;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx+'px'; dot.style.top = my+'px';
+  });
+  (function spr(){
+    rx += (mx-rx)*.1; ry += (my-ry)*.1;
+    ring.style.left = rx+'px'; ring.style.top = ry+'px';
+    requestAnimationFrame(spr);
+  })();
+  document.querySelectorAll('a,button,.wk').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+  });
+
+  /* ── HERO ENTRANCE ───────────────────────────── */
+  requestAnimationFrame(() => {
+    document.querySelectorAll('#hero [data-d]').forEach(el => {
+      setTimeout(() => el.classList.add('in'), 150 + (+el.dataset.d));
+    });
+  });
+
+  /* ── SCROLL REVEAL ───────────────────────────── */
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold:.08, rootMargin:'0px 0px -30px' });
+  document.querySelectorAll('.wk').forEach(el => io.observe(el));
+
+  const ioH = new IntersectionObserver(es => {
+    es.forEach(e => { if(e.isIntersecting){
+      e.target.querySelectorAll('[data-d]').forEach(el => {
+        setTimeout(() => el.classList.add('in'), 100 + (+el.dataset.d));
+      });
+      ioH.unobserve(e.target);
+    }});
+  }, { threshold:.3 });
+  const wTop = document.querySelector('.wt'); if(wTop) ioH.observe(wTop);
+
+  /* ── CTA BURST (subtle) ──────────────────────── */
+  const bc = document.getElementById('bc');
+  const bx = bc.getContext('2d');
+  const bR = () => { bc.width = innerWidth; bc.height = innerHeight; };
+  bR(); window.addEventListener('resize', bR);
+  const sp = [];
+  function drawM(x,y,s,r,a){
+    if(a<.01) return;
+    bx.save(); bx.globalAlpha=a; bx.strokeStyle='#FF4500';
+    bx.lineWidth=Math.max(1,s*.11); bx.lineCap='square'; bx.lineJoin='miter';
+    bx.translate(x,y); bx.rotate(r);
+    const h=s*.42, arm=s*.27, c=s*.1;
+    bx.beginPath(); bx.moveTo(arm,-h); bx.lineTo(-h+c,-h); bx.lineTo(-h,-h+c); bx.lineTo(-h,h*.1); bx.lineTo(-h+c*.6,arm*.5); bx.stroke();
+    bx.beginPath(); bx.moveTo(-arm,h); bx.lineTo(h-c,h); bx.lineTo(h,h-c); bx.lineTo(h,-h*.1); bx.lineTo(h-c*.6,-arm*.5); bx.stroke();
+    bx.restore();
+  }
+  (function aB(){
+    bx.clearRect(0,0,bc.width,bc.height);
+    for(let i=sp.length-1;i>=0;i--){
+      const s=sp[i]; s.x+=s.vx; s.y+=s.vy; s.vx*=.96; s.vy*=.96; s.rot+=s.dr; s.life-=s.dc;
+      if(s.life<=0){sp.splice(i,1);continue;}
+      drawM(s.x,s.y,s.sz,s.rot,s.life*.4);
+    }
+    requestAnimationFrame(aB);
+  })();
+  document.getElementById('cta').addEventListener('click', function(){
+    const r=this.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    for(let i=0;i<7;i++){
+      const a=(i/7)*Math.PI*2+Math.random()*.3;
+      sp.push({x:cx,y:cy,vx:Math.cos(a)*(2+Math.random()*2.5),vy:Math.sin(a)*(2+Math.random()*2.5),
+        rot:a,dr:(Math.random()-.5)*.1,sz:10+Math.random()*14,life:1,dc:.035});
+    }
+  });
+
+  /* ── VIEWER ──────────────────────────────────── */
+  const vw   = document.getElementById('vw');
+  const vImg = document.getElementById('vImg');
+  const vCat = document.getElementById('vCat');
+  const vNam = document.getElementById('vName');
+  const vYr  = document.getElementById('vYr');
+  const vLnk = document.getElementById('vLink');
+  const vCt  = document.getElementById('vCt');
+  let cur = 0;
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function setViewer(i, animate){
+    cur = i;
+    const p = P[i];
+    vCat.textContent = p.c;
+    vNam.textContent = p.n;
+    vYr.textContent  = p.y;
+    vLnk.href        = p.h;
+    vCt.textContent   = pad(i+1) + ' / ' + pad(P.length);
+
+    if(animate){
+      // re-trigger clip animation
+      vImg.style.transition = 'none';
+      vImg.style.clipPath   = 'inset(12% 8%)';
+      vImg.style.transform  = 'scale(.9)';
+      vImg.offsetHeight;
+      vImg.style.transition = '';
+      vImg.style.clipPath   = '';
+      vImg.style.transform  = '';
+    }
+    vImg.src = p.img;
+  }
+
+  function openV(i){
+    setViewer(i, false);
+    vw.classList.remove('closing');
+    vw.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeV(){
+    vw.classList.add('closing');
+    setTimeout(() => {
+      vw.classList.remove('open','closing');
+      document.body.style.overflow = '';
+    }, 420);
+  }
+
+  function nextV(){ setViewer((cur+1) % P.length, true); }
+  function prevV(){ setViewer((cur-1+P.length) % P.length, true); }
+
+  // card click → open viewer
+  document.querySelectorAll('.wk').forEach(card => {
+    card.addEventListener('click', e => {
+      e.preventDefault();
+      openV(+card.dataset.i);
+    });
+  });
+
+  document.getElementById('vwBg').addEventListener('click', closeV);
+  document.getElementById('vCl').addEventListener('click', closeV);
+  document.getElementById('vNext').addEventListener('click', nextV);
+  document.getElementById('vPrev').addEventListener('click', prevV);
+
+  // keyboard
+  document.addEventListener('keydown', e => {
+    if(!vw.classList.contains('open')) return;
+    if(e.key==='Escape') closeV();
+    if(e.key==='ArrowRight') nextV();
+    if(e.key==='ArrowLeft') prevV();
+  });
+
+  // swipe on viewer
+  let tx0 = 0;
+  vw.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, {passive:true});
+  vw.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx0;
+    if(Math.abs(dx) > 60){ dx < 0 ? nextV() : prevV(); }
+  });
+
+})();
+</script>
+</body>
+</html>
