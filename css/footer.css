@@ -3,15 +3,16 @@
 .site-footer{
   position: relative;
   z-index: 1;
-  padding: 42px 5vw 30px;          /* compact: 80/52 → 42/30 */
-  border-top: 1px solid rgba(255,255,255,0.04);
+  padding: 42px 5vw 30px;
+  background: var(--black);
+  border-top: 2px solid var(--light);
 }
 .fg{
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--light), var(--power), transparent);
-  opacity: 0.5;
+  height: 6px;
+  background: var(--power);
+  display: none;
 }
 .fgr{
   display: flex;
@@ -27,11 +28,11 @@
 .fl i { color: var(--light); font-style: normal; }
 
 .fc { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.fc img { height: 32px; filter: brightness(0) invert(1); opacity: 0.5; }
+.fc img { height: 32px; filter: brightness(0) invert(1); opacity: 0.85; }
 .fc span {
   font-size: 9px;
   letter-spacing: 0.22em;
-  color: #2a2a2a;
+  color: var(--mute);
   text-transform: uppercase;
 }
 

@@ -13,9 +13,8 @@
               background 0.35s ease, backdrop-filter 0.35s ease;
 }
 .nav.scrolled{
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: var(--black);
+  border-bottom: 1px solid var(--light);
 }
 .nav.hide { transform: translateY(-100%); }
 
@@ -26,23 +25,25 @@
 .nav-l a{
   font-family: var(--ff-body);
   font-size: 11px;
+  font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  opacity: 0.55;
-  transition: opacity 0.3s;
+  color: var(--milk);
+  opacity: 0.85;
+  transition: color 0.25s, opacity 0.25s;
   position: relative;
 }
 .nav-l a::after{
   content: '';
   position: absolute;
-  bottom: -4px; left: 0;
-  width: 0; height: 1px;
+  bottom: -6px; left: 0;
+  width: 0; height: 2px;
   background: var(--light);
   transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.nav-l a:hover { opacity: 1; }
+.nav-l a:hover { opacity: 1; color: var(--light); }
 .nav-l a:hover::after { width: 100%; }
-.nav-l a.act { opacity: 1; }
+.nav-l a.act { opacity: 1; color: var(--light); }
 .nav-l a.act::after { width: 100%; }
 
 /* hamburger */
@@ -69,7 +70,7 @@
   position: fixed;
   inset: 0;
   z-index: 299;
-  background: rgba(6,6,6,0.96);
+  background: var(--black);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -84,10 +85,10 @@
   font-family: var(--ff-display);
   font-size: clamp(28px, 8vw, 48px);
   letter-spacing: 0.08em;
-  opacity: 0.7;
-  transition: opacity 0.3s, color 0.3s;
+  color: var(--milk);
+  transition: color 0.25s;
 }
-.mob-menu a:hover { opacity: 1; color: var(--light); }
+.mob-menu a:hover { color: var(--light); }
 
 /* Close button (injected by js/nav.js when the mob-menu opens) */
 .mob-close{

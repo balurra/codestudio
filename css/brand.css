@@ -13,13 +13,13 @@
   --power: #EC1B07;
   --black: #000000;
 
-  /* Surfaces */
+  /* Surfaces — fondos planos, alto contraste */
   --bg:    #000000;
-  --bg-2:  #0a0a0a;
-  --tx:    #ebebeb;
-  --mute:  #555;
-  --hair:  rgba(255,255,255,0.06);
-  --hair-strong: rgba(255,255,255,0.10);
+  --bg-2:  #000000;
+  --tx:    #ffffff;
+  --mute:  #9a9a9a;
+  --hair:  rgba(255,255,255,0.18);
+  --hair-strong: rgba(255,255,255,0.32);
 
   /* Typography */
   --ff-display: 'Bebas Neue','Helvetica Neue',Helvetica,Arial,sans-serif;
@@ -41,48 +41,20 @@ a { color: inherit; text-decoration: none; }
 img { display: block; }
 button { background: none; border: none; color: inherit; font-family: inherit; cursor: pointer; }
 
-/* film grain overlay */
+/* film grain overlay — muy sutil para no apagar los colores */
 body::after{
   content: '';
   position: fixed;
   inset: 0;
   z-index: 9000;
   pointer-events: none;
-  opacity: 0.025;
+  opacity: 0.018;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 200px 200px;
 }
 
-/* ambient warm blobs */
-.ambient{ position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-.ambient i{
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(clamp(80px,15vw,150px));
-  mix-blend-mode: screen;
-}
-.ambient i:nth-child(1){
-  width: 55vw; height: 55vw;
-  background: rgba(253,117,43,.07);
-  top: -18%; left: -12%;
-  animation: bf1 28s ease-in-out infinite alternate;
-}
-.ambient i:nth-child(2){
-  width: 42vw; height: 42vw;
-  background: rgba(236,27,7,.05);
-  bottom: -12%; right: -8%;
-  animation: bf2 24s ease-in-out infinite alternate;
-}
-.ambient i:nth-child(3){
-  width: 35vw; height: 35vw;
-  background: rgba(253,117,43,.035);
-  top: 35%; left: 25%;
-  animation: bf3 32s ease-in-out infinite alternate;
-}
-
-@keyframes bf1 { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(14vw,8vh) scale(1.15)} 100%{transform:translate(4vw,-6vh) scale(.9)} }
-@keyframes bf2 { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(-10vw,-6vh) scale(1.12)} 100%{transform:translate(-4vw,5vh) scale(.92)} }
-@keyframes bf3 { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(-7vw,10vh) scale(1.08)} 100%{transform:translate(8vw,-7vh) scale(1.02)} }
+/* Ambient eliminado — fondo plano, sin halos. */
+.ambient{ display: none !important; }
 
 /* shared utility: section title */
 .section-title{
@@ -92,13 +64,50 @@ body::after{
   letter-spacing: 0.01em;
   text-align: center;
 }
+/* Tag minimalista universal: línea corta + texto pequeño. */
 .section-kicker{
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
   font-family: var(--ff-body);
   font-size: 11px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--light);
-  margin-bottom: 16px;
-  font-weight: 400;
+  margin-bottom: 18px;
+  font-weight: 500;
 }
+.section-kicker::before{
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+}
+
+/* Botón CTA universal — outline → hover rellena. Reutilizable. */
+.btn-cta{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 52px;
+  box-sizing: border-box;
+  font-family: var(--ff-display);
+  font-size: clamp(14px, 1.2vw, 17px);
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--light);
+  padding: 0 32px;
+  line-height: 1;
+  background: transparent;
+  border: 1.5px solid var(--light);
+  border-radius: 0;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, gap 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+.btn-cta .arrow{ display: inline-block; transition: transform 0.35s cubic-bezier(0.22,1,0.36,1); }
+.btn-cta:hover{ background: var(--light); color: var(--black); gap: 18px; }
+.btn-cta:hover .arrow{ transform: translateX(4px); }
+.btn-cta:disabled{ opacity: 0.55; cursor: not-allowed; }

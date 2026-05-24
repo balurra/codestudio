@@ -10,27 +10,24 @@
   const bracket = `<svg viewBox="0 0 40 40"><path d="M4 36 L4 12 C4 7.6 7.6 4 12 4 L36 4"/></svg>`;
   const ph = `<svg class="ph" viewBox="0 0 40 40"><path d="M4 36 L4 12 C4 7.6 7.6 4 12 4 L36 4"/><path d="M36 4 L36 28 C36 32.4 32.4 36 28 36 L4 36"/></svg>`;
 
-  /* Designed cover placeholders — each work gets a unique
-     gradient based on its position. When a real "cover" image is
-     provided via the work object it overrides the placeholder. */
+  /* Bloques de color planos — palette de marca, alto contraste.
+     Cuando un work trae cover real, el placeholder se reemplaza. */
   const PALETTES = [
-    ['#3a1a08', '#0c0502'],   // amber
-    ['#3a0a14', '#0c0205'],   // crimson
-    ['#1f0a3a', '#06020c'],   // violet
-    ['#0a1a3a', '#02050c'],   // navy
-    ['#0a3a2a', '#02080a'],   // emerald
-    ['#3a2a0a', '#0c0802'],   // gold
-    ['#0a3a3a', '#02080a'],   // teal
-    ['#3a0a30', '#0c0208']    // magenta
+    { bg: '#FD752B', fg: '#000000', accent: '#000000' }, // naranja
+    { bg: '#EC1B07', fg: '#FBF9F5', accent: '#000000' }, // rojo
+    { bg: '#FBF9F5', fg: '#000000', accent: '#EC1B07' }, // milk
+    { bg: '#000000', fg: '#FBF9F5', accent: '#FD752B' }, // negro
+    { bg: '#FD752B', fg: '#FBF9F5', accent: '#EC1B07' }, // naranja+milk
+    { bg: '#EC1B07', fg: '#000000', accent: '#FBF9F5' }, // rojo+negro
+    { bg: '#000000', fg: '#FD752B', accent: '#EC1B07' }, // negro+naranja
+    { bg: '#FBF9F5', fg: '#EC1B07', accent: '#000000' }  // milk+rojo
   ];
 
   function placeholderHTML(w, idx){
-    const [a, b] = PALETTES[idx % PALETTES.length];
-    const bg = `linear-gradient(135deg, ${a} 0%, ${b} 100%)`;
+    const p = PALETTES[idx % PALETTES.length];
     return `
-      <div class="cm-placeholder" style="background:${bg};">
-        <div class="pl-glow"></div>
-        <span class="pl-type">${w.type}</span>
+      <div class="cm-placeholder" style="background:${p.bg};color:${p.fg};">
+        <span class="pl-type" style="color:${p.accent};">${w.type}</span>
         <span class="pl-client">${w.client}</span>
       </div>`;
   }
