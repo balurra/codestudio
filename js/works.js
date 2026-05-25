@@ -16,7 +16,7 @@ window.WORKS = [
     category: 'Shows & Fiestas',
     year: 2026,
     location: 'Paysandú, Uruguay',
-    video: 'assets/video/logoanimation.mp4',
+    video: 'assets/video/trabajos/2026-05-15_23h11_32.mp4',
     cover: '',
     tagline: 'Cuatro días, una ciudad entera bailando.',
     description: [
